@@ -29,13 +29,15 @@ else:
    print('Failed to get reading. Try again!')
 
 #mongodb connection
-myclient = pymongo.MongoClient("mongodb://admin:yayayaya@192.168.0.28:27017/")
-mydb = myclient["mointor"]
+myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+mydb = myclient["monitor"]
 mycol = mydb["metrics"]
 
 #openweather api (pilar)
 info_led.on()
-ow_api_url = 'http://api.openweathermap.org/data/2.5/weather?q=Pilar,AR&units=metrics&appid=243a93a5fdc086d0d73486ed1d7cd609'
+ow_file = open("openweather.secret", "r")
+ow_secret = ow_file.readline()
+ow_api_url = 'http://api.openweathermap.org/data/2.5/weather?q=Pilar,AR&units=metrics&appid=' + ow_secret
 ow_response = requests.get(ow_api_url)
 ow_data_dict = ow_response.json()
 ow_temp = 0.0
