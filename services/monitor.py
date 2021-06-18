@@ -35,8 +35,8 @@ mycol = mydb["metrics"]
 
 #openweather api (pilar)
 info_led.on()
-ow_file = open("openweather.secret", "r")
-ow_secret = ow_file.readline()
+ow_file = open("./openweather.secret", "r")
+ow_secret = ow_file.readline().replace('\n','')
 ow_api_url = 'http://api.openweathermap.org/data/2.5/weather?q=Pilar,AR&units=metrics&appid=' + ow_secret
 ow_response = requests.get(ow_api_url)
 ow_data_dict = ow_response.json()
@@ -47,6 +47,8 @@ for ow_key in ow_data_dict:
         if (ow_key == "main"):
                 ow_temp = ow_data_dict[ow_key]["temp"] - 273.15
                 ow_humi = ow_data_dict[ow_key]["humidity"]
+
+print('ow temp:{0}, humi:{1}'.format(ow_temp,ow_humi))
 
 tempDict = {
     "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
