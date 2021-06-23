@@ -52,20 +52,12 @@ print('ow temp:{0}, humi:{1}'.format(ow_temp,ow_humi))
 
 tempDict = {
     "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    "type" : "temp",
-    "value" : temperature,
-    "zoneValue" : ow_temp
+    "tempValue" : temperature,
+    "tempZoneValue" : ow_temp,
+    "humiValue" : humidity,
+    "humiZoneValue" : ow_humi
 }
-
-humiDict = {
-    "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    "type" : "humi",
-    "value" : humidity,
-    "zoneValue" : ow_humi
-}
-
 mycol.insert_one(tempDict)
-mycol.insert_one(humiDict)
 info_led.off()
 
 dhtDevice.exit()
