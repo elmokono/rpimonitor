@@ -1,7 +1,9 @@
-﻿using homeMonitor.Models;
+﻿using System;
+using homeMonitor.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
 
 namespace homeMonitor.Services
 {
@@ -17,11 +19,17 @@ namespace homeMonitor.Services
             _metrics = database.GetCollection<Metric>(settings.MetricsCollectionName);
         }
 
-        public List<Metric> GetHumidityList() => _metrics.Find(metric => metric.Type == Metric.HumidityType).ToList();
+        private Metric GetLastMetric() =>
+            _metrics.Find(metric => true)
+                .Sort(Builders<Metric>.Sort.Descending("timestamp"))
+                .Limit(10)
+                .First();
 
-        public List<Metric> GetTemperatureList() => _metrics.Find(metric => metric.Type == Metric.TemperatureType).ToList();
+        public double GetCurrentTemperature() => GetLastMetric().TempValue;
 
-        public double GetCurrentTemperature() => GetTemperatureList().OrderByDescending(x => x.TimeStamp).First().Value;
+        public double GetCurrentHumidity() => GetLastMetric().HumiValue;
+
+        public Metric GetCurrentMetric() => GetLastMetric();
 
         public Metric Get(string id) => _metrics.Find<Metric>(metric => metric.Id == id).FirstOrDefault();
     }

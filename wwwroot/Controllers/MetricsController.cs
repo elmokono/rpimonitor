@@ -20,22 +20,12 @@ namespace homeMonitor.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Metric>> Get() => _monitorService.GetTemperatureList();
+        public ActionResult<Metric> Get() => _monitorService.GetCurrentMetric();
 
         [Route("currentTemp")]
         public ActionResult<double> GetCurrentTemperature() => _monitorService.GetCurrentTemperature();
-        
-        [HttpGet("{id:length(24)}", Name = "GetMetric")]
-        public ActionResult<Metric> Get(string id)
-        {
-            var metric = _monitorService.Get(id);
 
-            if (metric == null)
-            {
-                return NotFound();
-            }
-
-            return metric;
-        }
+        [Route("currentHumi")]
+        public ActionResult<double> GetCurrentHumidity() => _monitorService.GetCurrentHumidity();
     }
 }

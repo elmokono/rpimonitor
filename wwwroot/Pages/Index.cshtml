@@ -1,10 +1,59 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home Monitor";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-md-6 text-center align-content-center">
+        Temperatura Interior (<span id="zoneTemp">...</span>)
+        <div class="rounded" style="font-size: 96px; font-weight: bold; background-color: darksalmon" id="temp">...</div>
+    </div>
+    <div class="col-md-6 text-center align-content-center">
+        Humedad Interior (<span id="zoneHumi">...</span>)
+        <div class="rounded" style="font-size: 96px; font-weight: bold; background-color: khaki" id="humi">...</div>
+    </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        /*function getTemp() {
+            $.ajax({
+                url: "/api/Metrics/currentTemp",
+                success: function (data) {
+                    $('#temp').text(data + "°");
+                }
+            });
+        }*/
+
+        /*function getHumi() {
+            $.ajax({
+                url: "/api/Metrics/currentHumi",
+                success: function (data) {
+                    $('#humi').text(data + "%");
+                }
+            });
+        }*/
+
+        function getMetric() {
+            $.ajax({
+                url: "/api/Metrics",
+                success: function (data) {
+                    $('#temp').text(Math.round(data.tempValue) + "°");
+                    $('#humi').text(Math.round(data.humiValue) + "%");
+                    $('#zoneTemp').text(Math.round(data.tempZoneValue) + "°");
+                    $('#zoneHumi').text(Math.round(data.humiZoneValue) + "%");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //setInterval(function () { getTemp(); }, 2000);
+            //setInterval(function () { getHumi(); }, 2000);
+            setInterval(function () { getMetric(); }, 2000);
+        });
+
+    </script>
+}

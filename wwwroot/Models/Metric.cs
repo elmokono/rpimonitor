@@ -7,9 +7,6 @@ namespace homeMonitor.Models
 
     public class Metric
     {
-        public const string HumidityType = "humi";
-        public const string TemperatureType = "temp";
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("_id")]
@@ -17,11 +14,19 @@ namespace homeMonitor.Models
         [BsonElement("timestamp")]
         public string TimeStamp { get; set; }
         [BsonElement("type")]
-        public string Type { get; set; }
+        public string MetricType { get; set; }
         [BsonElement("value")]
-        public double Value { get; set; }
+        public double MetricValue { get; set; }
         [BsonElement("zoneValue")]
-        public double ZoneValue { get; set; }
+        public double MetricZoneValue { get; set; }
+        [BsonElement("tempValue")]
+        public double TempValue { get; set; }
+        [BsonElement("tempZoneValue")]
+        public double TempZoneValue { get; set; }
+        [BsonElement("humiValue")]
+        public double HumiValue { get; set; }
+        [BsonElement("humiZoneValue")]
+        public double HumiZoneValue { get; set; }
     }
 }
 
