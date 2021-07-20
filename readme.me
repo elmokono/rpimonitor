@@ -11,7 +11,9 @@ docker run -d --name rpi3-mongodb3.2 --restart unless-stopped \
 -p 27017:27017 -p 28017:28017 lowdef/rpi3-mongodb3.2 mongod --storageEngine mmapv1
 
 # repair 
-docker run -d --name rpi3-mongodb3.2 \
+docker container stop rpi3-mongodb3.2
+docker container rm rpi3-mongodb3.2
+docker run --name rpi3-mongodb3.2 \
 -v /home/pi/monitor/database/db:/data/db \
 -v /home/pi/monitor/database/configdb:/data/configdb \
 -p 27017:27017 -p 28017:28017 lowdef/rpi3-mongodb3.2 mongod --repair
