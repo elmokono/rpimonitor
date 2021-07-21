@@ -9,7 +9,8 @@
 import board
 import adafruit_dht
 from gpiozero import LED
-import pymongo
+#import pymongo
+import psycopg2
 from datetime import datetime
 import requests
 import json
@@ -29,9 +30,16 @@ else:
    print('Failed to get reading. Try again!')
 
 #mongodb connection
-myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
-mydb = myclient["monitor"]
-mycol = mydb["metrics"]
+#myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+#mydb = myclient["monitor"]
+#mycol = mydb["metrics"]
+
+#postgres connection
+pg_file = open("./postgres.secret", "r")
+pg_secret_user = pg_file.readline().replace('\n','')
+pg_secret_pass = pg_file.readline().replace('\n','')
+pg_conn = psycopg2.connect("dbname=monitor user={0} host=localhost password={1}".format(pg_secret_user, pg_secret_pass))
+pg_cur = pg_conn.cursor()
 
 #openweather api (pilar)
 info_led.on()
@@ -50,15 +58,20 @@ for ow_key in ow_data_dict:
 
 print('ow temp:{0}, humi:{1}'.format(ow_temp,ow_humi))
 
-tempDict = {
-    "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    "tempValue" : temperature,
-    "tempZoneValue" : ow_temp,
-    "humiValue" : humidity,
-    "humiZoneValue" : ow_humi
-}
-mycol.insert_one(tempDict)
+#tempDict = {
+#    "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+#    "tempValue" : temperature,
+#    "tempZoneValue" : ow_temp,
+#    "humiValue" : humidity,
+#    "humiZoneValue" : ow_humi
+#}
+#mycol.insert_one(tempDict)
+
+pg_cur.execute('insert into metrics ("timeStamp", "tempValue", "tempZoneValue", "humiValue", "humiZoneValue") values (%s, %s, %s, %s, %s)', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, ow_temp, humidity, ow_humi))
+pg_conn.commit()
+pg_cur.close()
+pg_conn.close()
+
 info_led.off()
 
 dhtDevice.exit()
-

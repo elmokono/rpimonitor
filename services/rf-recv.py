@@ -7,7 +7,8 @@ import time
 import logging
 import board
 import adafruit_dht
-import pymongo
+#import pymongo
+import psycopg2
 from datetime import datetime
 from gpiozero import LED
 
@@ -22,9 +23,16 @@ def exithandler(signal, frame):
     sys.exit(0)
 
 #mongodb connection
-myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
-mydb = myclient["monitor"]
-mycol = mydb["rf"]
+#myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+#mydb = myclient["monitor"]
+#mycol = mydb["rf"]
+
+#postgres connection
+pg_file = open("./postgres.secret", "r")
+pg_secret_user = pg_file.readline().replace('\n','')
+pg_secret_pass = pg_file.readline().replace('\n','')
+pg_conn = psycopg2.connect("dbname=monitor user={0} host=localhost password={1}".format(pg_secret_user, pg_secret_pass))
+pg_cur = pg_conn.cursor()
 
 logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
                     format='%(asctime)-15s - [%(levelname)s] %(module)s: %(message)s', )
@@ -46,13 +54,22 @@ while True:
         logging.info(str(rfdevice.rx_code) +
                      " [pulselength " + str(rfdevice.rx_pulselength) +
                      ", protocol " + str(rfdevice.rx_proto) + "]")
-        signalDict = {
-         "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-         "code" : rfdevice.rx_code,
-         "pulseLength" : rfdevice.rx_pulselength,
-         "protocol" : rfdevice.rx_proto
-        }
-        mycol.insert_one(signalDict)
+        #signalDict = {
+        # "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        # "code" : rfdevice.rx_code,
+        # "pulseLength" : rfdevice.rx_pulselength,
+        # "protocol" : rfdevice.rx_proto
+        #}
+        #mycol.insert_one(signalDict)
+
+        pg_cur.execute(
+                       'insert into rf ("timeStamp", "code", "pulseLength", "protocol") values (%s, %s, %s, %s)',
+                       (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), rfdevice.rx_code, rfdevice.rx_pulselength,rfdevice.rx_proto))
+        pg_conn.commit()
+        #pg_cur.close()
+        #pg_conn.close()
+
         signal_led.off()
     time.sleep(0.01)
 rfdevice.cleanup()
+
