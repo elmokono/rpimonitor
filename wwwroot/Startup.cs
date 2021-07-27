@@ -32,7 +32,7 @@ namespace homeMonitor
 
             services.AddControllers();
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +41,7 @@ namespace homeMonitor
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {
@@ -62,6 +63,8 @@ namespace homeMonitor
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }
