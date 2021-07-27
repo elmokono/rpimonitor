@@ -1,3 +1,7 @@
+#turn on/off display
+vcgencmd display_power 0
+vcgencmd display_power 1
+
 # docker
 https://phoenixnap.com/kb/docker-on-raspberry-pi
 
@@ -11,11 +15,22 @@ docker run -d --name rpi3-mongodb3.2 --restart unless-stopped \
 -p 27017:27017 -p 28017:28017 lowdef/rpi3-mongodb3.2 mongod --storageEngine mmapv1
 
 # repair 
-docker run -d --name rpi3-mongodb3.2 --restart unless-stopped \
+docker container stop rpi3-mongodb3.2
+docker container rm rpi3-mongodb3.2
+docker run --name rpi3-mongodb3.2 \
 -v /home/pi/monitor/database/db:/data/db \
 -v /home/pi/monitor/database/configdb:/data/configdb \
 -p 27017:27017 -p 28017:28017 lowdef/rpi3-mongodb3.2 mongod --repair
 docker container prune
+
+# postgre
+https://hub.docker.com/r/arm32v7/postgres
+docker run --name postgres --restart unless-stopped \
+-p 5432:5432 \
+-e POSTGRES_PASSWORD=yayayaya \
+-e PGDATA=/var/lib/postgresql/data/pgdata \
+-v /home/pi/monitor/database/postgres/data:/var/lib/postgresql/data \
+-d arm32v7/postgres
 
 # pinout
 rf433 send data GPIO 26
