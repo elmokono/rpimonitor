@@ -1,36 +1,27 @@
 ﻿using System;
 using homeMonitor.Models;
-using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Bson;
 
 namespace homeMonitor.Services
 {
     public class MonitorService
     {
-        private readonly IMongoCollection<Metric> _metrics;
+        private readonly MonitorDbContext _context;
 
-        public MonitorService(IMonitorDatabaseSettings settings)
+        public MonitorService(MonitorDbContext context)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _metrics = database.GetCollection<Metric>(settings.MetricsCollectionName);
+            _context = context;
         }
 
-        private Metric GetLastMetric() =>
-            _metrics.Find(metric => true)
-                .Sort(Builders<Metric>.Sort.Descending("timestamp"))
-                .Limit(10)
-                .First();
+        private Metric GetLastMetric() => _context.metrics.OrderByDescending(x => x.timeStamp).First();
 
-        public double GetCurrentTemperature() => GetLastMetric().TempValue;
+        public double GetCurrentTemperature() => GetLastMetric().tempValue;
 
-        public double GetCurrentHumidity() => GetLastMetric().HumiValue;
+        public double GetCurrentHumidity() => GetLastMetric().humiValue;
 
         public Metric GetCurrentMetric() => GetLastMetric();
 
-        public Metric Get(string id) => _metrics.Find<Metric>(metric => metric.Id == id).FirstOrDefault();
+        public Metric Get(int id) => _context.metrics.FirstOrDefault(metric => metric.rowIndex == id);
     }
 }
