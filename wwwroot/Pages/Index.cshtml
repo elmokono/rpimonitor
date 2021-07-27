@@ -5,37 +5,45 @@
 }
 
 <div class="row">
-    <div class="col-md-6 text-center align-content-center">
-        Temperatura Interior (<span id="zoneTemp">...</span>)
-        <div class="rounded" style="font-size: 96px; font-weight: bold; background-color: darksalmon" id="temp">...</div>
+
+    <div class="col-md-3">
+        <div class="row" id="left-pane">
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=America%2FArgentina%2FBuenos_Aires&amp;src=ZWxtb2tvbm9AZ21haWwuY29t&amp;color=%237986CB&amp;mode=AGENDA&amp;showPrint=0&amp;showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;showNav=0" style="border-width:0" width="100%" height="460" frameborder="0" scrolling="no"></iframe>
+        </div>
     </div>
-    <div class="col-md-6 text-center align-content-center">
-        Humedad Interior (<span id="zoneHumi">...</span>)
-        <div class="rounded" style="font-size: 96px; font-weight: bold; background-color: khaki" id="humi">...</div>
+    <div class="col-md-9">
+        <div class="row">
+            <div id="right-top-pane" class="col-md-12">Home Monitor - by Daniel Carlozzi</div>
+        </div>
+        <div class="row">
+            <div id="right-mid-pane-1" class="col-md-6">test</div>
+            <div id="right-mid-pane-2" class="col-md-3">
+                <div class="rounded" style="font-size: 96px;" id="temp">...</div>
+                Temperatura Interior (<span id="zoneTemp">...</span>)
+            </div>
+            <div id="right-mid-pane-3" class="col-md-3">
+                <div class="rounded" style="font-size: 96px;" id="humi">...</div>
+                Humedad Interior (<span id="zoneHumi">...</span>)
+            </div>
+        </div>
+        <div class="row">
+            <div id="right-bottom-pane-1" class="col-md-6">
+                <video src="rtsp://elmokono.ignorelist.com:5541/2">
+                    Your browser does not support the VIDEO tag and/or RTP streams.
+                </video>
+            </div>
+            <div id="right-bottom-pane-2" class="col-md-6">
+                <video src="rtsp://elmokono.ignorelist.com:5542/2">
+                    Your browser does not support the VIDEO tag and/or RTP streams.
+                </video>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
-
-        /*function getTemp() {
-            $.ajax({
-                url: "/api/Metrics/currentTemp",
-                success: function (data) {
-                    $('#temp').text(data + "°");
-                }
-            });
-        }*/
-
-        /*function getHumi() {
-            $.ajax({
-                url: "/api/Metrics/currentHumi",
-                success: function (data) {
-                    $('#humi').text(data + "%");
-                }
-            });
-        }*/
 
         function getMetric() {
             $.ajax({
@@ -50,8 +58,6 @@
         }
 
         $(document).ready(function () {
-            //setInterval(function () { getTemp(); }, 2000);
-            //setInterval(function () { getHumi(); }, 2000);
             setInterval(function () { getMetric(); }, 2000);
         });
 

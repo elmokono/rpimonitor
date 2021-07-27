@@ -6,6 +6,7 @@ using homeMonitor.Models;
 using homeMonitor.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,18 +26,13 @@ namespace homeMonitor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
-            services.Configure<MonitorDatabaseSettings>(
-                Configuration.GetSection(nameof(MonitorDatabaseSettings)));
+            services.AddDbContext<MonitorDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSingleton<IMonitorDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<MonitorDatabaseSettings>>().Value);
-
-            services.AddSingleton<MonitorService>();
+            services.AddScoped<MonitorService>();
 
             services.AddControllers();
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +41,7 @@ namespace homeMonitor
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {
@@ -66,6 +63,8 @@ namespace homeMonitor
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }
