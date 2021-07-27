@@ -2,6 +2,7 @@
 **/bin/
 **/obj/
 **/out/
+database/
 
 # files
 Dockerfile*
