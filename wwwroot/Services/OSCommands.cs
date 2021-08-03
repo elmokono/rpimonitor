@@ -21,8 +21,9 @@ namespace homeMonitor.Services
                 StartInfo =
                 {
                     FileName = "/bin/bash",
-                    Arguments = "-c \"" + command + "\"",
+                    Arguments = $"-c \"{command}\"",
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true
                 }
