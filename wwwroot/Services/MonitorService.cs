@@ -35,7 +35,7 @@ namespace homeMonitor.Services
                     Address = "FF:FF:BA:00:EA:30",
                     Handle = "0x0007",
                     Name = "Luz Living",
-                    RgbColorCommand = "gatttool -b {{ADDRESS}} --char-write-req -a {{HANDLE}} -n 56{{RR}}{{GG}}{{BB}}{{WW}}f0aa",
+                    RgbColorCommand = "/usr/bin/gatttool -b {{ADDRESS}} --char-write-req -a {{HANDLE}} -n 56{{RR}}{{GG}}{{BB}}{{WW}}f0aa",
                     RowIndex = 0
                 }
             };
