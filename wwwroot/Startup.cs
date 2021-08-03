@@ -28,6 +28,8 @@ namespace homeMonitor
         {
             services.AddDbContext<MonitorDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<IOsCommands, LinuxCommands>();
+
             services.AddScoped<MonitorService>();
 
             services.AddControllers();
