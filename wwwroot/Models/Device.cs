@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace homeMonitor.Models
 {
     public class Device
     {
         [Key]
+        [Column("rowIndex")]
         public int RowIndex { get; set; }
+        [Column("name")]
         public string Name { get; set; }
     }
 
     public class BluetoothRgbLight : Device
     {
+        [Column("address")]
         public string Address { get; set; }
+        [Column("handle")]
         public string Handle { get; set; }
-        public string RgbColorCommand { get; set; }
+        [Column("command")] 
+        public string Command { get; set; }
     }
-
-    public class BluetoothRgbLightCommand
-    {
-        public int DeviceId { get; set; }
-        public string Color { get; set; }
-    }
-    
 }

@@ -9,6 +9,6 @@ namespace homeMonitor.Models
         }
 
         public DbSet<Models.Metric> metrics { get; set; }
-        public DbSet<Models.Device> devices { get; set; }
+        public DbSet<Models.BluetoothRgbLight> devices { get; set; }
     }
 }

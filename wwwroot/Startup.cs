@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using homeMonitor.Models;
 using homeMonitor.Services;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace homeMonitor
 {
@@ -27,8 +22,6 @@ namespace homeMonitor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MonitorDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddSingleton<IOsCommands, LinuxCommands>();
 
             services.AddScoped<MonitorService>();
 

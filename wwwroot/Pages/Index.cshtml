@@ -1,6 +1,4 @@
 ﻿@page
-@using Microsoft.CodeAnalysis.CSharp
-@using homeMonitor.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Inicio";
@@ -19,13 +17,13 @@
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="far fa-lightbulb"></i> @device.Name
                         </button>
-                        <div class="dropdown-menu dropdown-rgb" data-deviceid="@device.RowIndex" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" data-color="00000000"><i class="fas fa-power-off"></i> Apagar / Off</a>
-                            <a class="dropdown-item" href="#" data-color="ff0000ff" style="background-color: red; color: white">Rojo</a>
-                            <a class="dropdown-item" href="#" data-color="000000ff" style="background-color: blue; color: white">Azul</a>
-                            <a class="dropdown-item" href="#" data-color="ffffffff" style="background-color: white">Blanco</a>
-                            <a class="dropdown-item" href="#" data-color="990099ff" style="background-color: purple; color: white">Purpura</a>
-                            <a class="dropdown-item" href="#" data-color="ffff00ff" style="background-color: yellow; color: black">Amarillo</a>
+                        <div class="dropdown-menu dropdown-rgb" data-address="@device.Address" data-handle="@device.Handle" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#" data-color="5600000000f0aa"><i class="fas fa-power-off"></i> Apagar / Off</a>
+                            <a class="dropdown-item" href="#" data-color="56ff0000fff0aa" style="background-color: red; color: white">Rojo</a>
+                            <a class="dropdown-item" href="#" data-color="56000000fff0aa" style="background-color: blue; color: white">Azul</a>
+                            <a class="dropdown-item" href="#" data-color="56fffffffff0aa" style="background-color: white">Blanco</a>
+                            <a class="dropdown-item" href="#" data-color="56990099fff0aa" style="background-color: purple; color: white">Purpura</a>
+                            <a class="dropdown-item" href="#" data-color="56ffff00fff0aa" style="background-color: yellow; color: black">Amarillo</a>
                         </div>
                     </div>
                 </div>
@@ -39,12 +37,12 @@
         <div class="row">
             <div id="right-mid-pane-1" class="col-md-6">test</div>
             <div id="right-mid-pane-2" class="col-md-3">
-                <div class="rounded" style="font-size: 96px;" id="temp">...</div>
-                Temperatura Interior (<span id="zoneTemp">...</span>)
+                <div class="rounded" style="font-size: 96px;"><i class="far fa-temperature-high"></i> <span id="temp"></span></div>
+                Temperatura Exterior (<span id="zoneTemp">...</span>)
             </div>
             <div id="right-mid-pane-3" class="col-md-3">
-                <div class="rounded" style="font-size: 96px;" id="humi">...</div>
-                Humedad Interior (<span id="zoneHumi">...</span>)
+                <div class="rounded" style="font-size: 96px;"><i class="far fa-tint"></i> <span id="humi"></span></div>
+                Humedad Exterior (<span id="zoneHumi">...</span>)
             </div>
         </div>
         <div class="row">
@@ -78,13 +76,12 @@
             });
         }
 
-        function setColor(deviceId, color) {
+        function setColor(address, handle, color) {
             $.ajax({
                 type: "POST",
-                url: "/api/Devices/setColor",
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({ DeviceId: deviceId, Color: color })
+                url: "http://192.168.1.37:8000/devices/setColor",
+                data: { address: address, handle: handle, color: color  },
+                dataType: "text"
             });
         }
 
@@ -92,7 +89,7 @@
             setInterval(function () { getMetric(); }, 10000);
 
             $('a.dropdown-item').click(function () {
-                setColor($(this).parent().data("deviceid"), $(this).data("color"));
+                setColor($(this).parent().data("address"), $(this).parent().data("handle"), $(this).data("color"));
             });
 
         });

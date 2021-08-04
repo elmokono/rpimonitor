@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using homeMonitor.Models;
-using homeMonitor.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using homeMonitor.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
