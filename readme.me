@@ -49,4 +49,4 @@ https://github.com/hunsly/Ledblee-Triones-control
 #read value (triones)
 sudo gatttool -b FF:FF:BA:00:EA:30 --char-read -a 0x0007
 #write value
-sudo gatttool -b FF:FF:BA:00:EA:30 --char-write -a 0x0007 -n 0x56000000fff0aa
+sudo gatttool -b FF:FF:BA:00:EA:30 --char-write-req -a 0x0007 -n 5600ff00fff0aa
