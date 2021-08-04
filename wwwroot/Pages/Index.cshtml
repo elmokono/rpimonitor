@@ -14,16 +14,16 @@
             {
                 <div class="row">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="far fa-lightbulb"></i> @device.Name
+                        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bi-lightbulb"></i> @device.Name
                         </button>
                         <div class="dropdown-menu dropdown-rgb" data-address="@device.Address" data-handle="@device.Handle" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" data-color="5600000000f0aa"><i class="fas fa-power-off"></i> Apagar / Off</a>
-                            <a class="dropdown-item" href="#" data-color="56ff0000fff0aa" style="background-color: red; color: white">Rojo</a>
-                            <a class="dropdown-item" href="#" data-color="56000000fff0aa" style="background-color: blue; color: white">Azul</a>
-                            <a class="dropdown-item" href="#" data-color="56fffffffff0aa" style="background-color: white">Blanco</a>
-                            <a class="dropdown-item" href="#" data-color="56990099fff0aa" style="background-color: purple; color: white">Purpura</a>
-                            <a class="dropdown-item" href="#" data-color="56ffff00fff0aa" style="background-color: yellow; color: black">Amarillo</a>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="5600000000f0aa"><i class="bi-lightbulb-off"></i> Apagar / Off</button>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="56ff0000fff0aa" style="background-color: red; color: white"><i class="bi-palette"></i> Rojo</button>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="560000fffff0aa" style="background-color: blue; color: white"><i class="bi-palette"></i> Azul</button>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="56fffffffff0aa" style="background-color: white"><i class="bi-palette"></i> Blanco</button>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="56990099fff0aa" style="background-color: purple; color: white"><i class="bi-palette"></i> Purpura</button>
+                            <button type="button" class="dropdown-item btn-lg" href="#" data-color="56ffff00fff0aa" style="background-color: yellow; color: black"><i class="bi-palette"></i> Amarillo</button>
                         </div>
                     </div>
                 </div>
@@ -32,16 +32,15 @@
     </div>
     <div class="col-md-9">
         <div class="row">
-            <div id="right-top-pane" class="col-md-12"><i class="far fa-home"></i> Home Monitor - by Daniel Carlozzi</div>
+            <div id="right-top-pane" class="col-md-12"><i class="bi-house"></i> Home Monitor - by Daniel Carlozzi</div>
         </div>
         <div class="row">
-            <div id="right-mid-pane-1" class="col-md-6">test</div>
-            <div id="right-mid-pane-2" class="col-md-3">
-                <div class="rounded" style="font-size: 96px;"><i class="far fa-temperature-high"></i> <span id="temp"></span></div>
+            <div id="right-mid-pane-1" class="col-md-6 text-center">
+                <div class="rounded" style="font-size: 64px;"><i class="bi-cloud-sun"></i> <span id="temp"></span></div>
                 Temperatura Exterior (<span id="zoneTemp">...</span>)
             </div>
-            <div id="right-mid-pane-3" class="col-md-3">
-                <div class="rounded" style="font-size: 96px;"><i class="far fa-tint"></i> <span id="humi"></span></div>
+            <div id="right-mid-pane-2" class="col-md-6 text-center">
+                <div class="rounded" style="font-size: 64px;"><i class="bi-droplet"></i> <span id="humi"></span></div>
                 Humedad Exterior (<span id="zoneHumi">...</span>)
             </div>
         </div>
@@ -80,7 +79,7 @@
             $.ajax({
                 type: "POST",
                 url: "http://192.168.1.37:8000/devices/setColor",
-                data: { address: address, handle: handle, color: color  },
+                data: { address: address, handle: handle, color: color },
                 dataType: "text"
             });
         }
@@ -88,7 +87,7 @@
         $(document).ready(function () {
             setInterval(function () { getMetric(); }, 10000);
 
-            $('a.dropdown-item').click(function () {
+            $('button.dropdown-item').click(function () {
                 setColor($(this).parent().data("address"), $(this).parent().data("handle"), $(this).data("color"));
             });
 
