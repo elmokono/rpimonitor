@@ -67,6 +67,11 @@ print('ow temp:{0}, humi:{1}'.format(ow_temp,ow_humi))
 #}
 #mycol.insert_one(tempDict)
 
+#emoncms.org
+emon_key = '16daf72377c2ee9599082b628b76fd45'
+emon_json = 'https://emoncms.org/input/post?node=pi4&fulljson={{"temperature":{0},"humidity":{1}}}&apikey={2}'.format(temperature, humidity, emon_key)
+requests.get(emon_json)
+
 pg_cur.execute('insert into metrics ("timeStamp", "tempValue", "tempZoneValue", "humiValue", "humiZoneValue") values (%s, %s, %s, %s, %s)', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, ow_temp, humidity, ow_humi))
 pg_conn.commit()
 pg_cur.close()
